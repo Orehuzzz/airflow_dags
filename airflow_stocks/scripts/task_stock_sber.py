@@ -47,6 +47,7 @@ class StocksSber(Base):
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 
+
 class RequestSender:
     def __init__(self):
         self.data_json = None
@@ -100,17 +101,6 @@ new_record = StocksSber(
                     last_price=last_price,
                     usd_price=usd_price
     )
-# new_record_two = Weather(
-#                     temp=temp,
-#                     feels_like=feels_like,
-#                     temp_min=temp_min,
-#                     pressure=pressure,
-#                     humidity=humidity,
-#                     sea_level=sea_level,
-#                     grnd_level=grnd_level
-#                     )
-#При добавлении второго + параметра
-
 
 session_local.add(new_record)
 session_local.commit()
