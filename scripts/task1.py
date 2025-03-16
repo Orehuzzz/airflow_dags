@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, VARCHAR, Date, Boolean, Float, TIMESTAMP, text
 from sqlalchemy.orm import declarative_base
+from params.global_params import API_key_from_weather
 import argparse
 import requests
 
@@ -32,7 +33,7 @@ SQLALCHEMY_DATABASE_URI = f"postgresql://{v_user}:{v_password}@{v_host}:{v_port}
 
 Base = declarative_base()
 
-API_KEY = 'b684c693026501d56805a8a28dc1b112'
+
 
 
 class Weather(Base):
@@ -53,7 +54,7 @@ engine = create_engine(SQLALCHEMY_DATABASE_URI)
 
 class RequestSender:
     def get_weather_by_city(self, city_name: str):
-        self.URL = f'https://api.openweathermap.org/data/2.5/weather?q=Moscow&appid={str(API_KEY)}&units=metric'
+        self.URL = f'https://api.openweathermap.org/data/2.5/weather?q=Moscow&appid={str(API_key_from_weather)}&units=metric'
         try:
             self.r = requests.get(url=self.URL)
             self.r_json = self.r.json()
