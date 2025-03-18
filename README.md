@@ -1,1 +1,2 @@
-# airflow_dags
+Apache Airflow и Postgresql подняты на арендованом мной сервере 
+Для коннекта к Apache используйте http://171.22.117.31:8080
