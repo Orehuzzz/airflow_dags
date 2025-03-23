@@ -92,7 +92,7 @@ Base.metadata.create_all(bind=engine)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 session_local = SessionLocal()
 
-new_record = StocksSber(
+record = StocksSber(
                     time=time,
                     date=date,
                     open_price=open_price,
@@ -102,5 +102,5 @@ new_record = StocksSber(
                     usd_price=usd_price
     )
 
-session_local.add(new_record)
+session_local.add(record)
 session_local.commit()
