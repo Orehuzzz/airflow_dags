@@ -20,5 +20,5 @@ task1 = BashOperator(
 
 task2 = BashOperator(
     task_id='task2',
-    bash_command='python3 /root/airflow/scripts/task2.py',
+    bash_command='python3 /root/airflow/scripts/task_plug.py',
     dag=dag)
