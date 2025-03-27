@@ -1,20 +1,9 @@
-import datetime as datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, VARCHAR, Date, Boolean, Float, TIMESTAMP
+from sqlalchemy import Column, Integer, VARCHAR, Date, Boolean, Float, TIMESTAMP, text, String
 from sqlalchemy.orm import declarative_base
 import argparse
-
-
-Base = declarative_base()
-
-class Currency(Base):
-    __tablename__ = 'currency2'
-    id = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
-    currency = Column(VARCHAR(50), nullable=False)
-    value = Column(Float, nullable=False)
-    currate_date = Column(TIMESTAMP, nullable=False, index=True)
-
+import requests
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--date", dest="date")
@@ -39,7 +28,30 @@ v_password = str(args.jdbc_password)
 v_port = str(args.port)
 
 
-SQLALCHEMY_DATABASE_URI = f"postgresql://{v_user}:{v_password}@{v_host}:{v_port}/{v_dbname}"
+Base = declarative_base()
+
+class Currency(Base):
+    __tablename__ = 'currency'
+    id = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    base = Column(String)
+    date = Column(TIMESTAMP)
+    rates_rub = Column(Float)
+    rates_eur = Column(Float)
+
+
+url = 'https://v6.exchangerate-api.com/v6/78ff706ef30e2b15bba6c038/latest/USD'
+
+# Making our request
+response = requests.get(url)
+data = response.json()
+
+SQLALCHEMY_DATABASE_URI = f"postgresql://{str(v_user)}:{str(v_password)}@{str(v_host)}:{str(v_port)}/{str(v_dbname)}"
+
+
+base = data.get('base_code')
+date = data.get('time_last_update_utc')
+rates_rub = data.get('conversion_rates').get('RUB')
+rates_eur = data.get('conversion_rates').get('EUR')
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
@@ -50,17 +62,11 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 session_local = SessionLocal()
 
 new_record = Currency(
-                    currency='EUR',
-                    value=2.222,
-                    currate_date=datetime.datetime.utcnow()
-                    )
-new_record2 = Currency(
-                    currency='RUB',
-                    value=3.333,
-                    currate_date=datetime.datetime.utcnow()
+                    base=base,
+                    date=date,
+                    rates_rub=rates_rub,
+                    rates_eur=rates_eur
                     )
 
 session_local.add(new_record)
-session_local.add(new_record2)
-
 session_local.commit()

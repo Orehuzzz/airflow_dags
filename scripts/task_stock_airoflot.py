@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, VARCHAR, Date, Boolean, Float, TIMESTAMP, text, TIME
+from sqlalchemy import Column, Integer, VARCHAR, Date, Boolean, Float, TIMESTAMP, text, TIME, PrimaryKeyConstraint
 from sqlalchemy.orm import declarative_base
 import argparse
 import requests
@@ -36,6 +36,7 @@ Base = declarative_base()
 class StocksAiroflot(Base):
     __tablename__ = 'airoloflot_stocks'
     id = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    name = Column(VARCHAR)
     time = Column(TIME)
     date = Column(Date)
     open_price = Column(Float)
@@ -71,6 +72,7 @@ columns = stocks.__dict__['data_json']['marketdata']['columns']
 values = stocks.__dict__['data_json']['marketdata']['data'][0]
 
 
+name_stocks = values[0]
 last_price_index = columns.index("LAST")
 open_price_index = columns.index('OPEN')
 usd_price_index = columns.index('VALUE_USD')
@@ -78,7 +80,8 @@ time_index = columns.index('TIME')
 low_price_index = columns.index('LOW')
 high_price_index = columns.index('HIGH')
 
-
+name = name_stocks
+name_id = 2
 last_price = values[last_price_index]
 open_price = values[open_price_index]
 usd_price = values[usd_price_index]
@@ -94,6 +97,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 session_local = SessionLocal()
 
 record = StocksAiroflot(
+                    name=name,
                     time=time,
                     date=date,
                     open_price=open_price,

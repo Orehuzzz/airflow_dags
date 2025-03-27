@@ -36,6 +36,7 @@ Base = declarative_base()
 class StocksSber(Base):
     __tablename__ = 'sber_stocks'
     id = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    name = Column(VARCHAR)
     time = Column(TIME)
     date = Column(Date)
     open_price = Column(Float)
@@ -69,7 +70,7 @@ stocks.get_SBER_stocks()
 columns = stocks.__dict__['data_json']['marketdata']['columns']
 values = stocks.__dict__['data_json']['marketdata']['data'][0]
 
-
+name_stocks = values[0]
 last_price_index = columns.index("LAST")
 open_price_index = columns.index('OPEN')
 usd_price_index = columns.index('VALUE_USD')
@@ -77,7 +78,7 @@ time_index = columns.index('TIME')
 low_price_index = columns.index('LOW')
 high_price_index = columns.index('HIGH')
 
-
+name = name_stocks
 last_price = values[last_price_index]
 open_price = values[open_price_index]
 usd_price = values[usd_price_index]
@@ -92,7 +93,7 @@ Base.metadata.create_all(bind=engine)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 session_local = SessionLocal()
 
-record = StocksSber(
+record = StocksSber(name=name,
                     time=time,
                     date=date,
                     open_price=open_price,

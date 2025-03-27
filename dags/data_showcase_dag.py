@@ -10,16 +10,16 @@ default_args = {
     #"retry_delay": timedelta(minutes=0.1)
 }
 
-dag = DAG('data_showcase_dag', default_args=default_args, schedule_interval='0 * * * *', catchup=True,
-          max_active_tasks=3, max_active_runs=1, tags=["showcase_dag", "dm_orders"])
+dag = DAG('stocks_mart_dag', default_args=default_args, schedule_interval='0 * * * *', catchup=True,
+          max_active_tasks=3, max_active_runs=1, tags=["mart_dag", 'sber_airoflot_stocks'])
 
 clear_day = PostgresOperator(
     task_id='clear_day',
     postgres_conn_id='main_postgresql_connection',
-    sql="""DELETE FROM public.dm_orders WHERE "buy_date" = '{{ ds }}'::date""",
+    sql="""DELETE FROM data_mart.mart_stocks WHERE "date" = '{{ ds }}'::date""",
     dag=dag)
 
-
+#Объединяем две таблицы с акциями в одну
 task_main = PostgresOperator(
     task_id='main_task',
     postgres_conn_id='main_postgresql_connection',
