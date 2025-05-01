@@ -27,6 +27,7 @@ v_user = str(args.user)
 v_password = str(args.jdbc_password)
 v_port = str(args.port)
 
+SQLALCHEMY_DATABASE_URI = f"postgresql://{str(v_user)}:{str(v_password)}@{str(v_host)}:{str(v_port)}/{str(v_dbname)}"
 
 Base = declarative_base()
 
@@ -44,8 +45,6 @@ url = 'https://v6.exchangerate-api.com/v6/78ff706ef30e2b15bba6c038/latest/USD'
 # Making our request
 response = requests.get(url)
 data = response.json()
-
-SQLALCHEMY_DATABASE_URI = f"postgresql://{str(v_user)}:{str(v_password)}@{str(v_host)}:{str(v_port)}/{str(v_dbname)}"
 
 
 base = data.get('base_code')

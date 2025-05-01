@@ -1,10 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, VARCHAR, Date, Boolean, Float, TIMESTAMP, text, TIME
+from sqlalchemy import Column, Integer, VARCHAR, Date, Boolean, Float, TIMESTAMP, text, TIME, PrimaryKeyConstraint
 from sqlalchemy.orm import declarative_base
 import argparse
 import requests
 import datetime
+import kagglehub
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--date", dest="date")
@@ -31,33 +32,4 @@ v_port = str(args.port)
 SQLALCHEMY_DATABASE_URI = f"postgresql://{v_user}:{v_password}@{v_host}:{v_port}/{v_dbname}"
 
 Base = declarative_base()
-
-
-class StocksSber(Base):
-    __tablename__ = 'sber_stocks'
-    id = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
-    name = Column(VARCHAR)
-    time = Column(TIME)
-    date = Column(Date)
-    open_price = Column(Float)
-    low_price = Column(Float)
-    high_price = Column(Float)
-    last_price = Column(Float)
-    usd_price = Column(Float)
-
-
-engine = create_engine(SQLALCHEMY_DATABASE_URI)
-
-class Weather(Base):
-    __tablename__ = 'behavior'
-    customer_id = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
-    gender = Column(VARCHAR)
-    age = Column(Integer)
-    city = Column(VARCHAR)
-    membership_type = Column(VARCHAR)
-    total_spend = Column(Float)
-    items_purchased = Column(Integer)
-    average_rating = Column(Float)
-    discount_applied = Column(Float)
-    satisfaction_level = Column(VARCHAR)
 

@@ -20,18 +20,26 @@ clear_day = PostgresOperator(
     dag=dag)
 
 #Объединяем две таблицы с акциями в одну
-task_main = PostgresOperator(
-    task_id='main_task',
+insert_task = PostgresOperator(
+    task_id='insert_task',
     postgres_conn_id='main_postgresql_connection',
-    sql="""INSERT INTO dm_orders(buy_date, product_name, city_name, value)
-SELECT buy_time::DATE AS buy_date, dp.product_name, dc.city_name ,  SUM(value) AS value
-FROM f_orders ord
-LEFT JOIN d_cities dc 
-ON dc.id = ord.city_id 
-LEFT JOIN d_products dp 
-ON ord.product_id = dp.id 
-GROUP BY buy_date, product_name, city_name;""",
+    sql="""INSERT INTO data_mart.f_mart_stocks (id, name, time, date, open_price, low_price, high_price, last_price,
+    usd_price)
+    SELECT id, name, time, date, open_price, low_price, high_price, last_price,
+    usd_price
+    FROM public.sber_stocks
+    UNION 
+    SELECT id, name, time, date, open_price, low_price, high_price, last_price,
+    usd_price
+    FROM public.airoloflot_stocks""",
     dag=dag
 )
 
-clear_day >> task_main
+join_task = PostgresOperator(
+    task_id='join_task',
+    postgress_conn_id='main_postgresql_connection',
+    sql="""SELECT id, name, time, date, open_price, low_price, high_price, last_price,
+    usd_price
+    FROM data_mart.f_mart_stocks
+    """
+)

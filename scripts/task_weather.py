@@ -2,7 +2,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, VARCHAR, Date, Boolean, Float, TIMESTAMP, text
 from sqlalchemy.orm import declarative_base
-from params.global_params import API_key_from_weather
 import argparse
 import requests
 
@@ -34,32 +33,23 @@ SQLALCHEMY_DATABASE_URI = f"postgresql://{v_user}:{v_password}@{v_host}:{v_port}
 Base = declarative_base()
 
 
-
-
 class Weather(Base):
-    __tablename__ = 'weather'
-    id = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
-    temp = Column(Float)
-    feels_like = Column(Float)
-    temp_min = Column(Float)
-    temp_max = Column(Float)
-    pressure = Column(Float)
-    humidity = Column(Float)
-    sea_level = Column(Float)
-    grnd_level = Column(Float)
+    __tablename__ = 'behavior'
+    customer_id = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    gender = Column(VARCHAR)
+    age = Column(Integer)
+    city = Column(VARCHAR)
+    membership_type = Column(VARCHAR)
+    total_spend = Column(Float)
+    items_purchased = Column(Integer)
+    average_rating = Column(Float)
+    discount_applied = Column(Float)
+    satisfaction_level
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 
 
-class RequestSender:
-    def get_weather_by_city(self, city_name: str):
-        self.URL = f'https://api.openweathermap.org/data/2.5/weather?q=Moscow&appid={str(API_key_from_weather)}&units=metric'
-        try:
-            self.r = requests.get(url=self.URL)
-            self.r_json = self.r.json()
-        except:
-            print('API request Error')
 
 
 request_sender = RequestSender()
