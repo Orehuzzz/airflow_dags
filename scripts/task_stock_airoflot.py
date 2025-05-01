@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, VARCHAR, Date, Boolean, Float, TIMESTAMP, text, TIME, PrimaryKeyConstraint
+from sqlalchemy import Column, Integer, VARCHAR, Date, Float, TIME
 from sqlalchemy.orm import declarative_base
 import argparse
 import requests
@@ -33,8 +33,8 @@ SQLALCHEMY_DATABASE_URI = f"postgresql://{v_user}:{v_password}@{v_host}:{v_port}
 Base = declarative_base()
 
 
-class StocksAiroflot(Base):
-    __tablename__ = 'airoloflot_stocks'
+class StocksSber(Base):
+    __tablename__ = 'sber_stocks'
     id = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     name = Column(VARCHAR)
     time = Column(TIME)
@@ -52,11 +52,9 @@ engine = create_engine(SQLALCHEMY_DATABASE_URI)
 class RequestSender:
     def __init__(self):
         self.data_json = None
-#Московская биржа не требует API-ключ
-#https://iss.moex.com/iss/engines/stock/markets/shares/securities - ссылка на название акций
-#указываются в конце - в данном случае вместо AFLT
-    def get_airoflot_stocks(self):
-        self.URL = f'https://iss.moex.com/iss/engines/stock/markets/shares/securities/AFLT.json'
+
+    def get_SBER_stocks(self):
+        self.URL = f'https://iss.moex.com/iss/engines/stock/markets/shares/securities/SBER.json'
         try:
             response = requests.get(url=self.URL)
             response.raise_for_status()
@@ -65,12 +63,12 @@ class RequestSender:
             print('API request Error')
 
 
+
 stocks = RequestSender()
-stocks.get_airoflot_stocks()
+stocks.get_SBER_stocks()
 
 columns = stocks.__dict__['data_json']['marketdata']['columns']
 values = stocks.__dict__['data_json']['marketdata']['data'][0]
-
 
 name_stocks = values[0]
 last_price_index = columns.index("LAST")
@@ -81,7 +79,6 @@ low_price_index = columns.index('LOW')
 high_price_index = columns.index('HIGH')
 
 name = name_stocks
-name_id = 2
 last_price = values[last_price_index]
 open_price = values[open_price_index]
 usd_price = values[usd_price_index]
@@ -96,8 +93,7 @@ Base.metadata.create_all(bind=engine)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 session_local = SessionLocal()
 
-record = StocksAiroflot(
-                    name=name,
+record = StocksSber(name=name,
                     time=time,
                     date=date,
                     open_price=open_price,
@@ -105,7 +101,7 @@ record = StocksAiroflot(
                     high_price=high_price,
                     last_price=last_price,
                     usd_price=usd_price
-)
+    )
 
 session_local.add(record)
 session_local.commit()

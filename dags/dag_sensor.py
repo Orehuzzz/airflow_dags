@@ -39,6 +39,7 @@ for i in [1, 2, 3, 4, 5]:
     task_id=f'task4_{str(i)}',
     bash_command='python3 /root/airflow/scripts/task_plug.py',
     dag=dag)
+
     task2 >> some_task
 
 task1 >> task_sensor >> task2 

@@ -1,10 +1,8 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, VARCHAR, Date, Boolean, Float, TIMESTAMP, text, TIME
+from sqlalchemy import Column, Integer, VARCHAR, Date,  Float,  TIME
 from sqlalchemy.orm import declarative_base
 import argparse
-import requests
-import datetime
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--date", dest="date")
