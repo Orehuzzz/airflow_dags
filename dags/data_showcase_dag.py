@@ -40,7 +40,7 @@ insert_task = PostgresOperator(
 
 join_task = PostgresOperator(
     task_id='join_task',
-    postgress_conn_id='main_postgresql_connection',
+    postgres_conn_id='main_postgresql_connection',
     sql="""SELECT id, name, time, date, open_price, low_price, high_price, last_price,
     usd_price
     FROM data_mart.f_mart_stocks
