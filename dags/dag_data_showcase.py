@@ -1,3 +1,4 @@
+#Этот даг ещё в разработке. Будет предназначен для создания витрины данных
 from datetime import datetime
 from airflow.models import DAG
 from airflow.providers.postgres.operators.postgres import PostgresOperator
