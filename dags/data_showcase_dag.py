@@ -1,7 +1,9 @@
 from datetime import datetime
 from airflow.models import DAG
 from airflow.providers.postgres.operators.postgres import PostgresOperator
+from airflow.hooks.base_hook import BaseHook
 
+connection = BaseHook.get_connection('main_postgresql_connection')
 
 default_args = {
     "owner": "etl_user",
