@@ -13,6 +13,7 @@ default_args = {
 dag = DAG('stocks_mart_dag', default_args=default_args, schedule_interval='0 * * * *', catchup=True,
           max_active_tasks=3, max_active_runs=1, tags=["mart_dag", 'sber_airoflot_stocks'])
 
+#Необходимо удалять пердыдущие данные, чтобы не было аномалий
 clear_day = PostgresOperator(
     task_id='clear_day',
     postgres_conn_id='main_postgresql_connection',
@@ -43,3 +44,5 @@ join_task = PostgresOperator(
     FROM data_mart.f_mart_stocks
     """
 )
+
+clear_day >> insert_task >> join_task

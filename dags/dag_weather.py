@@ -2,6 +2,8 @@ from datetime import datetime
 from airflow.models import DAG
 from airflow.operators.bash import BashOperator
 from airflow.hooks.base_hook import BaseHook
+
+
 connection = BaseHook.get_connection('main_postgresql_connection')
 
 
@@ -25,3 +27,5 @@ task2 = BashOperator(
     task_id='task2',
     bash_command='python3 /root/airflow/scripts/task_plug.py',
     dag=dag)
+
+task1 >> task2

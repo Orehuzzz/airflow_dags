@@ -2,10 +2,11 @@ from datetime import datetime
 from airflow.models import DAG
 from airflow.operators.bash import BashOperator
 
+connection = BaseHook.get_connection('main_postgresql_connection')
 
 default_args = {
     "owner": "etl_user",
-    "depends_on_past": False,
+    "depends_on_past": False, #определяем зависит ли выполнение каждой таски от успешного выполнения предыдущей
     "start_date": datetime(2025, 2, 18),
     #"retry_delay": timedelta(minutes=0.1)
 }
