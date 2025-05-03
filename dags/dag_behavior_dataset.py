@@ -9,7 +9,7 @@ connection = BaseHook.get_connection('spark_default')
 
 default_args = {
     "owner": "etl_user",
-    "depends_on_past": False, #узнать что значит параметр
+    "depends_on_past": False,
     "start_date": datetime(2025, 5, 1)
     #"retry_delay": timedelta(minutes=0.1)
 }
