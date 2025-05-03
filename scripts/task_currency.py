@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, Float, TIMESTAMP, String
+from sqlalchemy import Column, Integer, Float, String, DATE
 from sqlalchemy.orm import declarative_base
 import argparse
 import requests
@@ -38,7 +38,7 @@ class Currency(Base):
     __tablename__ = 'currency'
     id = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
     base = Column(String)
-    date = Column(TIMESTAMP)
+    date = Column(DATE)
     rates_rub = Column(Float)
     rates_eur = Column(Float)
 

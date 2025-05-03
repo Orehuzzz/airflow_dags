@@ -38,12 +38,15 @@ insert_task = PostgresOperator(
     dag=dag
 )
 
+#Join-им колону с валютой - конечная табличка: showcase_stocks
 join_task = PostgresOperator(
     task_id='join_task',
     postgres_conn_id='main_postgresql_connection',
-    sql="""SELECT id, name, time, date, open_price, low_price, high_price, last_price,
-    usd_price
-    FROM data_mart.f_mart_stocks
+    sql="""INSERT INTO showcase_stocks (name, date, open_price, low_price, high_price, last_price, rates_rub, rates_eur)
+    SELECT m_s.name, m_s.date, m_s.open_price, m_s.low_price, m_s.high_price, m_s.last_price, c.rates_rub, c.rates_eur
+    FROM data_mart.f_mart_stocks m_s
+    JOIN public.currency c
+    ON m_s.date = c.date;
     """
 )
 
