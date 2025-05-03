@@ -19,7 +19,7 @@ dag = DAG('dag_data_showcase', default_args=default_args, schedule_interval='* *
 clear_day = PostgresOperator(
     task_id='clear_day',
     postgres_conn_id='main_postgresql_connection',
-    sql="""DELETE FROM data_mart.f_mart_stocks WHERE "date" = '{{ ds }}'::date""",
+    sql="""DELETE FROM publci.showcase_stocks WHERE "date" = '{{ ds }}'::date""",
     dag=dag)
 
 #Объединяем две таблицы с акциями в одну
