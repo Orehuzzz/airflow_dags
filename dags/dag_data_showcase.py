@@ -13,7 +13,7 @@ default_args = {
     #"retry_delay": timedelta(minutes=0.1)
 }
 
-dag = DAG('stocks_mart_dag', default_args=default_args, schedule_interval='0 * * * *', catchup=True,
+dag = DAG('dag_data_showcase', default_args=default_args, schedule_interval='0 * * * *', catchup=True,
           max_active_tasks=3, max_active_runs=1, tags=["mart_dag", 'sber_airoflot_stocks'])
 
 #Необходимо удалять пердыдущие данные, чтобы не было аномалий
