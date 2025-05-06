@@ -17,7 +17,7 @@ dag = DAG('dag_sensor', default_args=default_args, schedule_interval='30 9 * * *
 
 task1 = BashOperator(
     task_id='task_weather',
-    bash_command='python3 /root/airflow/scripts/task_plug.py',
+    bash_command='python3 /root/airflow/scripts/task_plug.py --date {{ ds }} ' +f'--host {connection.host} --dbname {connection.schema} --user {connection.login} --jdbc_password {connection.password} --port 5432',
     dag=dag)
 
 task_sensor = CheckTableSensor(
@@ -31,13 +31,13 @@ task_sensor = CheckTableSensor(
 
 task2 = BashOperator(
     task_id='task2',
-    bash_command='python3 /root/airflow/scripts/task_weather.py',
+    bash_command='python3 /root/airflow/scripts/task_weather.py --date {{ ds }} ' +f'--host {connection.host} --dbname {connection.schema} --user {connection.login} --jdbc_password {connection.password} --port 5432',
     dag=dag)
 
 for i in [1, 2, 3, 4, 5]:
     some_task = BashOperator(
     task_id=f'task4_{str(i)}',
-    bash_command='python3 /root/airflow/scripts/task_plug.py',
+    bash_command='python3 /root/airflow/scripts/task_plug.py --date {{ ds }} ' +f'--host {connection.host} --dbname {connection.schema} --user {connection.login} --jdbc_password {connection.password} --port 5432',
     dag=dag)
 
 

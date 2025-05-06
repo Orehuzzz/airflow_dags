@@ -33,9 +33,10 @@ spark_submit_task = SparkSubmitOperator(
 def load_csv_to_db():
 
 # Загрузка CSV в DataFrame
+    conn = create_engine(parametrs.SQLALCHEMY_DATABASE_URI)
+
     df = pd.read_csv('/jupyter_notebook_files/data/clear/part-00000-ea3365ac-0859-425a-a100-115b517ee248-c000.csv')
 
-    conn = create_engine(parametrs.SQLALCHEMY_DATABASE_URI)
 
     df.to_sql('public.spark_table', conn, index=False,
           if_exists='append')
