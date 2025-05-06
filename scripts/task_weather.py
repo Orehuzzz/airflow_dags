@@ -6,6 +6,7 @@ from params.global_params import API_WEATHER #скрываем API-ключ
 import argparse
 import requests
 
+#Парсим данные для подключения к БД
 parser = argparse.ArgumentParser()
 parser.add_argument("--date", dest="date")
 parser.add_argument("--host", dest="host")
@@ -28,7 +29,8 @@ v_user = str(args.user)
 v_password = str(args.jdbc_password)
 v_port = str(args.port)
 
-SQLALCHEMY_DATABASE_URI = f"postgresql://{v_user}:{v_password}@{v_host}:{v_port}/{v_dbname}"
+#Подлючение к БД
+SQLALCHEMY_DATABASE_URI = f"postgresql://{str(v_user)}:{str(v_password)}@{str(v_host)}:{str(v_port)}/{str(v_dbname)}"
 
 Base = declarative_base()
 
