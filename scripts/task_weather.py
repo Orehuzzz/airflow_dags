@@ -88,6 +88,8 @@ new_record = Weather(
                     sea_level=sea_level,
                     grnd_level=grnd_level
                     )
+
+#При добавлении второго + параметра
 # new_record_two = Weather(
 #                     temp=temp,
 #                     feels_like=feels_like,
@@ -97,7 +99,7 @@ new_record = Weather(
 #                     sea_level=sea_level,
 #                     grnd_level=grnd_level
 #                     )
-#При добавлении второго + параметра
+
 
 
 session_local.add(new_record)
