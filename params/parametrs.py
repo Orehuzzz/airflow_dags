@@ -1,0 +1,1 @@
+SQLALCHEMY_DATABASE_URI = "postgresql://main_user:dbnfkbq08042002@171.22.117.31:5432/main_database"

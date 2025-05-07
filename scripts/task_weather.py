@@ -52,7 +52,7 @@ engine = create_engine(SQLALCHEMY_DATABASE_URI)
 
 class RequestSender:
     def get_weather_by_city(self, city_name: str):
-        self.URL = f'https://api.openweathermap.org/data/2.5/weather?q=Moscow&appid={str(API_WEATHER)}&units=metric'
+        self.URL = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={str(API_WEATHER)}&units=metric'
         try:
             self.r = requests.get(url=self.URL)
             self.r_json = self.r.json()

@@ -1,4 +1,4 @@
-#Попытка в спарк
+# Попытка в спарк
 from datetime import datetime
 from airflow.models import DAG
 from airflow.operators.python import PythonOperator
@@ -7,6 +7,8 @@ from airflow.hooks.base_hook import BaseHook
 from sqlalchemy import create_engine
 from params import parametrs
 import pandas as pd
+import glob
+
 
 connection = BaseHook.get_connection('spark_default')
 
@@ -14,7 +16,7 @@ default_args = {
     "owner": "etl_user",
     "depends_on_past": False,
     "start_date": datetime(2025, 5, 1)
-    #"retry_delay": timedelta(minutes=0.1)
+    # "retry_delay": timedelta(minutes=0.1)
 }
 
 dag = DAG('dag_spark_behavior', default_args=default_args, schedule_interval='@daily', catchup=False,
@@ -22,24 +24,35 @@ dag = DAG('dag_spark_behavior', default_args=default_args, schedule_interval='@d
 
 spark_submit_task = SparkSubmitOperator(
     task_id='submit_spark_job',
-    application='/jupyter_notebook_files/spark_exercise.py',
-    conn_id='spark_default',
-    name='spark_job',
+    application='/jupyter_notebook_files/spark_exercise.py',  # Путь к скрипту
+    conn_id='spark_default',  # Имя подключения в Airflow
+    name='spark_job',  # Имя приложения в Spark UI
     verbose=True,
+    conf={
+        "spark.master": "spark://vm3190178.stark-industries.solutions:7077",
+        "spark.submit.deployMode": "client"  # Явно указываем режим
+    },
+    spark_binary='/root/spark/bin/spark-submit',  # Полный путь к spark-submit
     dag=dag
 )
 
 
 def load_csv_to_db():
-
-# Загрузка CSV в DataFrame
-    conn = create_engine(parametrs.SQLALCHEMY_DATABASE_URI)
-
-    df = pd.read_csv('/jupyter_notebook_files/data/clear/part-00000-ea3365ac-0859-425a-a100-115b517ee248-c000.csv')
+    # Загрузка CSV в DataFrame
+    csv_files = glob.glob('/jupyter_notebook_files/data/clear/part-00000-*.csv')
 
 
-    df.to_sql('public.spark_table', conn, index=False,
-          if_exists='append')
+    latest_csv = sorted(csv_files)[-1]  # Берем самый новый
+
+    engine = BaseHook.get_connection('main_postgresql_connection')
+
+    df = pd.read_csv(latest_csv)
+
+    df.to_sql(name='public.spark_table',
+              con=engine,
+              if_exists='append',
+              index=False)
+
 
 load_csv_task = PythonOperator(
     task_id='load_csv_to_db',
