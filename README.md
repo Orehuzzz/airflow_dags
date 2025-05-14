@@ -23,7 +23,9 @@ SQLalchemy - для создания БД при необходимости
 
 Requests - для get-запросов на сайты
 
-Apache Airflow и Postgresql подняты на арендованом сервере 
+Spark + Pyspark
+
+Apache Airflow и Postgresql подняты на арендованом сервере
 
 URL для Apache: http://171.22.117.31:8080
 
