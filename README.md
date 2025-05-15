@@ -1,4 +1,4 @@
-# Мой пет-проект
+# 🚀 Мой пет-проект
 ![pSQL](https://img.shields.io/badge/psql-16.8-blue)
 ![Python Version](https://img.shields.io/badge/python-3.8-green)
 ![Apache Airflow](https://img.shields.io/badge/apache_airflow-2.9.3-orange)
