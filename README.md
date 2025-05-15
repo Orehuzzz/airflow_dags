@@ -3,7 +3,8 @@
 ![Python Version](https://img.shields.io/badge/python-3.8-green)
 ![Apache Airflow](https://img.shields.io/badge/apache_airflow-2.9.3-orange)
 ![Spark](https://img.shields.io/badge/spark-3.5.5-yellow)
-
+![Requests](https://img.shields.io/badge/requests-2.32.3-toxic)
+![SQLalchemy](https://img.shields.io/badge/sql_alchemy-1.4.54-brown)
 ## 📚 Описание проекта
 
 Данный проект представляет из себя набор DAG-ов, которые используют приведённые скрипты для ETL-процессов.
